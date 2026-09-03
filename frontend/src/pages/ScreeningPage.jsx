@@ -178,8 +178,9 @@ export default function ScreeningPage({ user }) {
   };
 
   const fetchSampleImage = async (filename) => {
-    const staticBase = import.meta.env.VITE_API_BASE_URL
-      ? import.meta.env.VITE_API_BASE_URL.replace(/\/api\/v1\/?$/, '')
+    const rawBase = import.meta.env.VITE_API_BASE_URL || '';
+    const staticBase = rawBase
+      ? rawBase.replace(/^(https?:\/\/)+/i, 'https://').replace(/\/api\/v1\/?$/, '')
       : '';
     const urls = [
       `/static/sample_documents/${filename}`,
