@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  body {
+    margin: 0;
+    background-color: #f7f8fa;
+    color: #1f2937;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  input, select, textarea, button {
+    font-family: inherit;
+    font-size: inherit;
+  }
+}
+
+/* Subtle Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f7f8fa;
+}
+::-webkit-scrollbar-thumb {
+  background: #d9dee7;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}

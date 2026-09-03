@@ -1,0 +1,37 @@
+# Environment & Virtualenv
+venv/
+.venv/
+env/
+.env
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Node & Frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+
+# Sensitive Border Document & PII Data
+backend/data/uploads/*
+!backend/data/uploads/.gitkeep
+backend/data/heatmaps/*
+!backend/data/heatmaps/.gitkeep
+backend/data/*.db
+backend/data/*.sqlite
+backend/data/*.sqlite3
+
+# OS & Dev Runtime Files
+.DS_Store
+Thumbs.db
+.*.pid
+.*.log
+*.pid
+*.log

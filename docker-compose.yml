@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  # ----------------------------------------------------------------------------
+  # Backend: FastAPI Document Screening & Forensics Engine
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sih26188-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV_PROFILE=production
+      - AI_INFERENCE_MODE=LOCAL / OFFLINE
+      - PIPELINE_VERSION=2.0.0
+      - OFFLINE_MODE=true
+      - DATABASE_URL=sqlite:///./data/sih_screening.db
+      # To switch to PostgreSQL container, uncomment:
+      # - DATABASE_URL=postgresql://postgres:postgres@db:5432/sih_screening
+      - SECRET_KEY=sih_2026_ssb_secure_dev_key_super_secret_offline_token
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:80
+    volumes:
+      - backend_data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/system/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # ----------------------------------------------------------------------------
+  # Frontend: React / Vite Operator UI & Multi-Checkpoint Dashboard
+  # ----------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sih26188-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  # ----------------------------------------------------------------------------
+  # PostgreSQL (Optional Enterprise Scalability Profile)
+  # Uncomment service and update DATABASE_URL in backend to activate PostgreSQL
+  # ----------------------------------------------------------------------------
+  # db:
+  #   image: postgres:16-alpine
+  #   container_name: sih26188-postgres
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_DB=sih_screening
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  backend_data:
+  # postgres_data:
