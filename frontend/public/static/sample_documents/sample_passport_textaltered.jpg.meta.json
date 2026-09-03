@@ -1,0 +1,13 @@
+{
+  "document_type": "PASSPORT",
+  "name": "ARJUN KUMAR SINGH",
+  "surname": "SINGH",
+  "passport_number": "K1234567",
+  "nationality": "INDIAN",
+  "dob": "14/08/1996",
+  "issue_date": "10/05/2020",
+  "expiry_date": "09/05/2030",
+  "gender": "M",
+  "mrz_line1": "P<INDSINGH<<ARJUN<KUMAR<<<<<<<<<<<<<<<<<<<<<",
+  "mrz_line2": "K1234567<6IND8505124M3005095<<<<<<<<<<<<<<06"
+}

@@ -182,12 +182,14 @@ export default function ScreeningPage({ user }) {
       ? import.meta.env.VITE_API_BASE_URL.replace(/\/api\/v1\/?$/, '')
       : '';
     const urls = [
-      `/static/uploads/${filename}`,
       `/static/sample_documents/${filename}`,
-      `${staticBase}/static/uploads/${filename}`,
       `${staticBase}/static/sample_documents/${filename}`,
-      `http://localhost:8000/static/uploads/${filename}`,
-      `http://localhost:8000/static/sample_documents/${filename}`
+      `https://ssb-backend-p18e.onrender.com/static/sample_documents/${filename}`,
+      `/static/uploads/${filename}`,
+      `${staticBase}/static/uploads/${filename}`,
+      `https://ssb-backend-p18e.onrender.com/static/uploads/${filename}`,
+      `http://localhost:8000/static/sample_documents/${filename}`,
+      `http://localhost:8000/static/uploads/${filename}`
     ];
     for (const url of urls) {
       if (!url) continue;
