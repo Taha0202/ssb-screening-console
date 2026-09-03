@@ -45,7 +45,13 @@ export default function LoginPage({ setUser }) {
       localStorage.setItem('ssb_officer', JSON.stringify(userProfile));
       navigate('/scan');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Authentication failed. Please check your credentials.');
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else if (!err.response) {
+        setError('Server is waking up from sleep on Render free tier (~30-45s cold start). Please click Sign In again in a few seconds.');
+      } else {
+        setError('Authentication failed. Please check your credentials.');
+      }
     } finally {
       setLoading(false);
     }
