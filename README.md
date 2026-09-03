@@ -6,6 +6,8 @@
 > **This prototype is designed for offline/local demonstration and decision support. It is not an operational border-security deployment.**  
 > All citizen names, identity numbers, facial images, and watchlist entries included in this repository are **100% synthetic demonstration reference data**.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Taha0202/ssb-screening-console)
+
 ---
 
 ## 1. Executive Summary
