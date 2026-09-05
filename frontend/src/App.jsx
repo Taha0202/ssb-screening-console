@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import LoginPage from './pages/LoginPage';
@@ -7,25 +7,31 @@ import ReviewPage from './pages/ReviewPage';
 import AuditPage from './pages/AuditPage';
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      // Check if user previously logged in
+      const saved = localStorage.getItem('ssb_officer');
+      if (saved) return JSON.parse(saved);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('ssb_officer');
-    if (saved) {
-      try {
-        setUser(JSON.parse(saved));
-      } catch (e) {}
-    } else {
-      // Default demo officer state if none in localStorage
-      setUser({
+      // If user explicitly clicked Log Out in this session, keep them at login
+      if (sessionStorage.getItem('ssb_logged_out') === 'true') {
+        return null;
+      }
+
+      // Default demo officer state so the workstation is immediately functional
+      const defaultOfficer = {
         id: 'off_001',
         badge_id: 'SSB-7741',
         full_name: 'Inspector R. K. Sharma',
         role: 'OFFICER',
-        checkpoint_location: 'Raxaul Checkpoint (Indo-Nepal)'
-      });
+        checkpoint_location: 'Raxaul Checkpoint Unit A'
+      };
+      localStorage.setItem('ssb_officer', JSON.stringify(defaultOfficer));
+      return defaultOfficer;
+    } catch (e) {
+      return null;
     }
-  }, []);
+  });
 
   return (
     <Router>
@@ -33,7 +39,10 @@ export default function App() {
         <Header user={user} setUser={setUser} />
         <main className="flex-1">
           <Routes>
-            <Route path="/login" element={<LoginPage setUser={setUser} />} />
+            <Route
+              path="/login"
+              element={user ? <Navigate to="/scan" replace /> : <LoginPage setUser={setUser} />}
+            />
             <Route
               path="/scan"
               element={user ? <ScreeningPage user={user} /> : <Navigate to="/login" replace />}

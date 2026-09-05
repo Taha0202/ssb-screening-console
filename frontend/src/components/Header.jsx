@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, MapPin } from 'lucide-react';
-import { getSystemStatus, getCheckpoints } from '../services/api';
+import { getSystemStatus, getCheckpoints, DEFAULT_CHECKPOINTS } from '../services/api';
 import SystemDiagnosticsModal from './SystemDiagnosticsModal';
 
 export default function Header({ user, setUser }) {
@@ -9,8 +9,8 @@ export default function Header({ user, setUser }) {
   const location = useLocation();
   const [sysStatus, setSysStatus] = useState(null);
   const [isDiagOpen, setIsDiagOpen] = useState(false);
-  const [checkpoints, setCheckpoints] = useState([]);
-  const [selectedCp, setSelectedCp] = useState(null);
+  const [checkpoints, setCheckpoints] = useState(DEFAULT_CHECKPOINTS);
+  const [selectedCp, setSelectedCp] = useState(DEFAULT_CHECKPOINTS[0]);
 
   useEffect(() => {
     getSystemStatus()
@@ -21,12 +21,14 @@ export default function Header({ user, setUser }) {
 
     getCheckpoints()
       .then((cps) => {
-        setCheckpoints(cps);
-        if (user && user.checkpoint_id) {
-          const current = cps.find(c => c.id === user.checkpoint_id);
-          if (current) setSelectedCp(current);
-        } else if (cps.length > 0) {
-          setSelectedCp(cps[0]);
+        if (Array.isArray(cps) && cps.length > 0) {
+          setCheckpoints(cps);
+          if (user && user.checkpoint_id) {
+            const current = cps.find(c => c.id === user.checkpoint_id);
+            if (current) setSelectedCp(current);
+          } else if (cps.length > 0) {
+            setSelectedCp(cps[0]);
+          }
         }
       })
       .catch(() => {});
@@ -48,8 +50,9 @@ export default function Header({ user, setUser }) {
   };
 
   const handleLogout = () => {
-    setUser(null);
+    sessionStorage.setItem('ssb_logged_out', 'true');
     localStorage.removeItem('ssb_officer');
+    setUser(null);
     navigate('/login');
   };
 

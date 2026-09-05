@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, RotateCw, Maximize2 } from 'lucide-react';
-import { scanDocument, uploadDocument } from '../services/api';
+import { scanDocument, uploadDocument, getApiBaseUrl } from '../services/api';
 
 export default function ScreeningPage({ user }) {
   const [docFile, setDocFile] = useState(null);
@@ -178,17 +178,15 @@ export default function ScreeningPage({ user }) {
   };
 
   const fetchSampleImage = async (filename) => {
-    const rawBase = import.meta.env.VITE_API_BASE_URL || '';
-    const staticBase = rawBase
-      ? rawBase.replace(/^(https?:\/\/)+/i, 'https://').replace(/\/api\/v1\/?$/, '')
-      : '';
+    const rawBase = getApiBaseUrl() || '';
+    const staticBase = rawBase.startsWith('/')
+      ? ''
+      : rawBase.replace(/^(https?:\/\/)+/i, 'https://').replace(/\/api\/v1\/?$/, '');
     const urls = [
       `/static/sample_documents/${filename}`,
       `${staticBase}/static/sample_documents/${filename}`,
-      `https://ssb-backend-p18e.onrender.com/static/sample_documents/${filename}`,
       `/static/uploads/${filename}`,
       `${staticBase}/static/uploads/${filename}`,
-      `https://ssb-backend-p18e.onrender.com/static/uploads/${filename}`,
       `http://localhost:8000/static/sample_documents/${filename}`,
       `http://localhost:8000/static/uploads/${filename}`
     ];
